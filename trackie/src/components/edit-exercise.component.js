@@ -3,7 +3,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default class EditExercise extends Component.React {
+export default class EditExercise extends Component {
   constructor(props) {
     super(props);
 
@@ -40,7 +40,8 @@ export default class EditExercise extends Component.React {
           users: response.data.map(user => user.username),
         });
       }
-    });
+    })
+    .catch(err => console.log(err))
   }
 
   onChangeUsername(e){
@@ -79,7 +80,8 @@ export default class EditExercise extends Component.React {
 
       console.log(exercise);
 
-      axios.post("http://localhost:5000/exercises/update"+this.props.match.params.id, exercise)
+      axios
+        .post("http://localhost:5000/exercises/update" + this.props.match.params.id, exercise)
         .then(res => console.log(res.data))
 
         window.location = "/"
@@ -90,18 +92,18 @@ export default class EditExercise extends Component.React {
       return(
         <div>
         <h3>Edit Exercise Log</h3>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Username: </label>
             <select
-              //ref="userInput"
+              ref="userInput"
              // ref={userInput}
               required
               className="form-control"
-              value={username}
-              onChange={onChangeUsername}
+              value={this.state.username}
+              onChange={this.onChangeUsername}
             >
-              {users.map(user => {
+              {this.state.users.map(user => {
                 return (
                   <option key={user} value={user}>
                     {user}
@@ -117,8 +119,8 @@ export default class EditExercise extends Component.React {
               type="text"
               required
               className="form-control"
-              value={description}
-              onChange={onChangeDescription}
+              value={this.state.description}
+              onChange={this.onChangeDescription}
             />
           </div>
   
@@ -127,15 +129,15 @@ export default class EditExercise extends Component.React {
             <input
               type="text"
               className="form-control"
-              value={duration}
-              onChange={onChangeDuration}
+              value={this.state.duration}
+              onChange={this.onChangeDuration}
             />
           </div>
   
           <div className="form-group">
             <label>Date: </label>
             <div>
-              <DatePicker selected={date} onChange={onChangeDate} />
+              <DatePicker selected={this.state.date} onChange={this.onChangeDate} />
             </div>
           </div>
   
