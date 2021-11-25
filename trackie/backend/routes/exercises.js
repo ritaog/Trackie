@@ -31,7 +31,7 @@ router.route("/add").post(async (req, res) => {
       date,
     });
 
-    const response = await newExercise.save();
+    await newExercise.save();
     res.json("Exercise added!");
   } catch (err) {
     res.status(400).json("Error: " + err);
@@ -53,7 +53,7 @@ router.route("/:id").get(async (req, res) => {
 //localhost:5000/exercises/:id
 router.route("/:id").delete(async (req, res) => {
   try {
-    const exercise = await Exercise.findByIdAndDelete(req.params.id);
+    await Exercise.findByIdAndDelete(req.params.id);
     res.json("Exercise deleted");
   } catch (err) {
     res.status(400).json("Error: " + err);
@@ -70,7 +70,7 @@ router.route("/update/:id").post(async (req, res) => {
     exercise.duration = Number(req.body.duration);
     exercise.date = Date.parse(req.body.date);
 
-    const response = await exercise.save();
+    await exercise.save();
     res.json("Exercise updated!");
   } catch (err) {
     res.status(400).json("Error: " + err);

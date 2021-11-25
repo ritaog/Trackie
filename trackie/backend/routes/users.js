@@ -18,9 +18,9 @@ router.route("/").get(async (req, res) => {
 router.route("/add").post(async (req, res) => {
   try {
     const username = req.body.username;
-    const newUser = new User({ username });
+    const newUser = await new User({ username });
 
-    const response = await newUser.save();
+    await newUser.save();
     res.json("User added!");
   } catch (err) {
     res.status(400).json("Error: " + err);
