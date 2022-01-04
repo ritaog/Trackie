@@ -15,11 +15,8 @@ export default function CreateUsers() {
       username,
     };
 
-    console.log(user);
     try {
-      const res = await axios.post("http://localhost:5000/users/add", user);
-
-      console.log(res.data);
+      await axios.post("http://localhost:5000/users/add", user);
 
       setUsername("");
     } catch (err) {
