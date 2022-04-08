@@ -3,11 +3,11 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import Navbar from "./components/navbar.component";
-import ExercisesList from "./components/exercises-list.component";
-import EditExercise from "./components/edit-exercise2.component";
-import CreateExercise from "./components/create-exercise.component";
-import CreateUsers from "./components/create-user.component";
+import Navbar from "./components/navbar";
+import ExercisesList from "./components/exercises-list";
+import EditExercise from "./components/edit-exercise";
+import CreateExercise from "./components/create-exercise";
+import CreateUsers from "./components/create-user";
 
 function App() {
   return (

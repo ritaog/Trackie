@@ -1,50 +1,41 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function EditExercise() {
+const EditExercise = () => {
+  let { id } = useParams();
+
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState(0);
   const [date, setDate] = useState(new Date());
   const [users, setUsers] = useState([]);
 
-  const userInput = useRef();
+  let userInput = useRef();
 
   useEffect(() => {
-    async function fetchExerciseData(props) {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/exercises/" + props.match.params.id
-        );
-        setUsername(response.data.username);
-        setDescription(response.data.description);
-        setDuration(response.data.duration);
-        setDate(new Date(response.data.date));
-        /*
-        if (response.data.length > 0) {
-          setUsers(response.data.map(user => user.username));
-        } */
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    const getData = async () => {
+      const response = await axios.get(`http://localhost:5000/exercises/${id}`);
+      const { username, description, duration, date } = response.data;
+      setUsername(username);
+      setDescription(description);
+      setDuration(duration);
+      setDate(new Date(`${date}`));
+    };
+    getData();
+  }, [id]);
 
-    async function fetchUserData() {
-      try {
-        const response = await axios.get("http://localhost:5000/users");
+  useEffect(() => {
+    const getData = async () => {
+      const response = await axios.get("http://localhost:5000/users/");
 
-        if (response.data.length > 0) {
-          setUsers(response.data.map(user => user.username));
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchExerciseData();
-    fetchUserData();
-  });
+      if (response.data >= 0) return;
+      setUsers(response.data.map(user => user.username));
+    };
+    getData();
+  }, []);
 
   const onChangeUsername = e => {
     setUsername(e.target.value);
@@ -62,7 +53,7 @@ export default function EditExercise() {
     setDate(date);
   };
 
-  const onSubmit = async (e, props) => {
+  const onSubmit = async e => {
     e.preventDefault();
 
     const exercise = {
@@ -72,21 +63,11 @@ export default function EditExercise() {
       date,
     };
 
-    console.log(exercise);
+    await axios.post(`http://localhost:5000/exercises/update/${id}`, exercise);
 
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/exercises/update" + props.match.params.id,
-        exercise
-      );
-
-      console.log(res.data);
-
-      window.location = "/";
-    } catch (err) {
-      console.error(err);
-    }
+    window.location = "/";
   };
+
   return (
     <div>
       <h3>Edit Exercise Log</h3>
@@ -94,7 +75,7 @@ export default function EditExercise() {
         <div className="form-group">
           <label>Username: </label>
           <select
-            //ref="userInput"
+            // ref="userInput"
             ref={userInput}
             required
             className="form-control"
@@ -149,4 +130,6 @@ export default function EditExercise() {
       </form>
     </div>
   );
-}
+};
+
+export default EditExercise;

@@ -22,6 +22,8 @@ export default function CreateUsers() {
     } catch (err) {
       console.error(err);
     }
+
+    window.location = "/";
   };
 
   return (

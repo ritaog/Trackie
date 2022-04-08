@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const Exercise = props => (
+//exercise component for each exercise entry
+const Exercise = ({ exercise, deleteExercise }) => (
   <tr>
-    <td>{props.exercise.username}</td>
-    <td>{props.exercise.description}</td>
-    <td>{props.exercise.duration}</td>
-    <td>{props.exercise.date.substring(0, 10)}</td>
+    <td>{exercise.username}</td>
+    <td>{exercise.description}</td>
+    <td>{exercise.duration}</td>
+    <td>{exercise.date.substring(0, 10)}</td>
     <td>
-      <Link to={"/edit/" + props.exercise._id}>edit</Link> |
+      <Link to={`/edit/${exercise._id}`}>edit</Link> |
       <a
         href="#"
         onClick={() => {
-          props.deleteExercise(props.exercise._id);
+          deleteExercise(exercise._id);
         }}
       >
         delete
@@ -30,18 +31,19 @@ export default function ExercisesList() {
       try {
         const response = await axios.get("http://localhost:5000/exercises/");
 
+        console.log("It just worked");
         setExercises(response.data);
       } catch (err) {
         console.error(err);
       }
     }
     fetchData();
-  });
+  }, []);
 
   async function deleteExercise(id) {
     try {
       const response = await axios.delete(
-        "http://localhost:5000/exercises/" + id
+        `http://localhost:5000/exercises/${id}`
       );
       console.log(response.data);
 
@@ -71,7 +73,7 @@ export default function ExercisesList() {
           <tr>
             <th>Username</th>
             <th>Description</th>
-            <th>Duration</th>
+            <th>Duration (in minutes)</th>
             <th>Date</th>
             <th>Actions</th>
           </tr>
