@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import exercisesRouter from "./routes/exercises.js";
 import usersRouter from "./routes/users.js";
-import connectDB from "./config/db.js";
+//import connectDB from "./config/db.js";
+import connectDB from "./models/db.js";
 
 //dotenv.config();
 //Load config
