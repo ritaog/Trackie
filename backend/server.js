@@ -27,10 +27,10 @@ app.use("/exercises", exercisesRouter);
 //localhost:5000/users
 app.use("/users", usersRouter);
 
-app.use("/", express.static("./build"));
-app.use("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./build", "index.html"));
-});
+//app.use("/", express.static("./build"));
+//app.use("*", (req, res) => {
+//  res.sendFile(path.join(__dirname, "./build", "index.html"));
+//});
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
